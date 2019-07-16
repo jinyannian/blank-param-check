@@ -2,9 +2,9 @@ package org.mudskipper.blankparamcheck.annotation;
 
 import java.lang.annotation.*;
 
-@Target(ElementType.PARAMETER)
+@Target({ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface BlankParamsCheckParamExceptional {
-    String name() default "";
+public @interface BlankParamCheck {
+    boolean name() default true;
 }

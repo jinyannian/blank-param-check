@@ -7,9 +7,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.mudskipper.blankparamcheck.annotation.BlankParamsCheck;
-import org.mudskipper.blankparamcheck.annotation.BlankParamsCheckMethodExceptional;
-import org.mudskipper.blankparamcheck.annotation.BlankParamsCheckParamExceptional;
+import org.mudskipper.blankparamcheck.annotation.BlankParamCheck;
+import org.mudskipper.blankparamcheck.annotation.Ignored;
 import org.mudskipper.blankparamcheck.exception.ParamsBlankException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,11 +47,11 @@ public class BlankParamsCheckAspect {
             Signature signature = joinPoint.getSignature();
             MethodSignature methodSignature = (MethodSignature) signature;
             Method method = methodSignature.getMethod();
-            BlankParamsCheck methodCheck = method.getAnnotation(BlankParamsCheck.class);
-            BlankParamsCheckMethodExceptional methodExceptionalCheck = method.getAnnotation(BlankParamsCheckMethodExceptional.class);
-            BlankParamsCheck classCheck = method.getDeclaringClass().getAnnotation(BlankParamsCheck.class);
+            BlankParamCheck methodCheck = method.getAnnotation(BlankParamCheck.class);
+            Ignored methodIgnore = method.getAnnotation(Ignored.class);
+            BlankParamCheck classCheck = method.getDeclaringClass().getAnnotation(BlankParamCheck.class);
             boolean methodCheckBoo = methodCheck == null ? false : methodCheck.name();
-            boolean methodCheckExceptionalBoo = methodExceptionalCheck == null ? false : methodExceptionalCheck.name();
+            boolean methodCheckExceptionalBoo = methodIgnore == null ? false : methodIgnore.name();
             boolean classCheckBoo = classCheck == null ? false : classCheck.name();
             boolean check = (methodCheckBoo || classCheckBoo) && !methodCheckExceptionalBoo ? true : false;
             logger.info("check params ? = {}", check);
@@ -64,7 +63,7 @@ public class BlankParamsCheckAspect {
                 for (int i = 0; i < parameterAnnotations.length; i++) {
                     Annotation[] annotations = parameterAnnotations[i];
                     for (Annotation annotation : annotations) {
-                        if (annotation.annotationType().equals(BlankParamsCheckParamExceptional.class)) {
+                        if (annotation.annotationType().equals(Ignored.class)) {
                             nocheckParameterNameList.add(parameterNames[i]);
                         }
                     }
