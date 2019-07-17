@@ -9,16 +9,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/test")
+@BlankParamCheck
 public class TestController {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @RequestMapping("/get")
-    @BlankParamCheck
     public String get(String abc, @Ignored String def){
         logger.info(abc);
         logger.info(def);
         return "";
     }
     @RequestMapping("/get2")
+    @Ignored
     public String get2(String abc, String def){
         logger.info(abc);
         logger.info(def);
