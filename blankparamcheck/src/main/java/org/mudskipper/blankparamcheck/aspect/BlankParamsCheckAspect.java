@@ -7,11 +7,13 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.mudskipper.blankparamcheck.annotation.BlankParamCheck;
+import org.mudskipper.blankparamcheck.annotation.BlankParameterCheck;
 import org.mudskipper.blankparamcheck.annotation.Ignored;
+import org.mudskipper.blankparamcheck.config.CustomizedConfiguration;
 import org.mudskipper.blankparamcheck.exception.ParamsBlankException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -30,11 +32,15 @@ public class BlankParamsCheckAspect {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    CustomizedConfiguration customizedConfiguration;
+
     @Pointcut("bean(*Controller)")
     public void webLog(){}
 
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) throws Throwable {
+        boolean loggerTrigger = customizedConfiguration.isLogger();
         // 接收到请求，记录请求内容
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = null;
@@ -43,18 +49,22 @@ public class BlankParamsCheckAspect {
 		}
         if (request != null) {
             // 记录下请求内容
-            logger.info("request class method = {}", joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+            if (loggerTrigger) {
+                logger.info("request class method = {}", joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+            }
             Signature signature = joinPoint.getSignature();
             MethodSignature methodSignature = (MethodSignature) signature;
             Method method = methodSignature.getMethod();
-            BlankParamCheck methodCheck = method.getAnnotation(BlankParamCheck.class);
+            BlankParameterCheck methodCheck = method.getAnnotation(BlankParameterCheck.class);
             Ignored methodIgnore = method.getAnnotation(Ignored.class);
-            BlankParamCheck classCheck = method.getDeclaringClass().getAnnotation(BlankParamCheck.class);
+            BlankParameterCheck classCheck = method.getDeclaringClass().getAnnotation(BlankParameterCheck.class);
             boolean methodCheckBoo = methodCheck == null ? false : methodCheck.name();
             boolean methodCheckExceptionalBoo = methodIgnore == null ? false : methodIgnore.name();
             boolean classCheckBoo = classCheck == null ? false : classCheck.name();
             boolean check = (methodCheckBoo || classCheckBoo) && !methodCheckExceptionalBoo ? true : false;
-            logger.info("check params ? = {}", check);
+            if (loggerTrigger) {
+                logger.info("check params ? = {}", check);
+            }
             if (check) {
                 Map<String, String[]> parameterMap = request.getParameterMap();
                 String[] parameterNames = methodSignature.getParameterNames();
@@ -68,8 +78,10 @@ public class BlankParamsCheckAspect {
                         }
                     }
                 }
-                logger.info("list of method params = {}", parameterNames == null ? null : Arrays.asList(parameterNames));
-                logger.info("list of ignored mehtod params = {}", nocheckParameterNameList);
+                if (loggerTrigger) {
+                    logger.info("list of method params = {}", parameterNames == null ? null : Arrays.asList(parameterNames));
+                    logger.info("list of ignored mehtod params = {}", nocheckParameterNameList);
+                }
                 for (String paramName : parameterNames) {
                     if (!nocheckParameterNameList.contains(paramName)) {
                         String[] strs = parameterMap.get(paramName);

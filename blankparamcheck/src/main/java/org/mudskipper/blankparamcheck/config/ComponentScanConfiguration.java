@@ -7,5 +7,5 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = {
         "org.mudskipper.blankparamcheck.*"
 })
-public class BlankParamCheckConfiguration {
+public class ComponentScanConfiguration {
 }

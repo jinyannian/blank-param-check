@@ -120,7 +120,7 @@
         </dependency>
         <dependency>
             <groupId>org.mudskipper</groupId>
-            <artifactId>blank-param-check</artifactId>
+            <artifactId>blank-parameter-check</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

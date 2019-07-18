@@ -1,6 +1,6 @@
 package org.mudskipper.example;
 
-import org.mudskipper.blankparamcheck.annotation.EnableBlankParamCheck;
+import org.mudskipper.blankparamcheck.annotation.EnableBlankParameterCheck;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableConfigurationProperties
 @EnableScheduling  // 开启定时器
 @EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class })
-@EnableBlankParamCheck
+@EnableBlankParameterCheck
 public class ExampleApplication {
 
     public static void main(String[] args) {
