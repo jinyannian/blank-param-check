@@ -82,13 +82,17 @@ public class BlankParamsCheckAspect {
                     logger.info("list of method params = {}", parameterNames == null ? null : Arrays.asList(parameterNames));
                     logger.info("list of ignored mehtod params = {}", nocheckParameterNameList);
                 }
+                List<String> blankParamNames = new ArrayList<>();
                 for (String paramName : parameterNames) {
                     if (!nocheckParameterNameList.contains(paramName)) {
                         String[] strs = parameterMap.get(paramName);
                         if (strs == null || strs.length == 0 || StringUtils.isBlank(strs[0])) {
-                            throw new ParamsBlankException(paramName);
+                            blankParamNames.add(paramName);
                         }
                     }
+                }
+                if (blankParamNames.size() > 0) {
+                    throw new ParamsBlankException(blankParamNames.toArray(new String[0]));
                 }
             }
         }

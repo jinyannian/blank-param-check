@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @RequestMapping("/get")
-    public String get(String abc, @Ignored String def){
+    public String get(String abc, String param, String str, @Ignored String def){
         logger.info(abc);
         logger.info(def);
         return "";
