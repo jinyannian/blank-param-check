@@ -53,14 +53,4 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-    <distributionManagement>
-        <repository>
-            <id>rdc-releases</id>
-            <url>https://repo.rdc.aliyun.com/repository/79631-release-fLut7P/</url>
-        </repository>
-        <snapshotRepository>
-            <id>rdc-snapshots</id>
-            <url>https://repo.rdc.aliyun.com/repository/79631-snapshot-6BJfUS/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
