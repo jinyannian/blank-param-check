@@ -10,7 +10,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import top.mudskipper.blankparamcheck.annotation.BlankParameterCheck;
 import top.mudskipper.blankparamcheck.annotation.Ignored;
 import top.mudskipper.blankparamcheck.config.CustomizedConfiguration;
-import top.mudskipper.blankparamcheck.exception.ParamsBlankException;
+import top.mudskipper.blankparamcheck.exception.ParameterBlankException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import java.util.Map;
 
 @Aspect
 @Component
-public class BlankParamsCheckAspect {
+public class BlankParameterCheckAspect {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -92,7 +92,7 @@ public class BlankParamsCheckAspect {
                     }
                 }
                 if (blankParamNames.size() > 0) {
-                    throw new ParamsBlankException(blankParamNames.toArray(new String[0]));
+                    throw new ParameterBlankException(blankParamNames.toArray(new String[0]));
                 }
             }
         }
