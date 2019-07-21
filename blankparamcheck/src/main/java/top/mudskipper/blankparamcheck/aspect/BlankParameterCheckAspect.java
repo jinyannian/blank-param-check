@@ -59,9 +59,9 @@ public class BlankParameterCheckAspect {
             Ignored methodIgnore = method.getAnnotation(Ignored.class);
             BlankParameterCheck classCheck = method.getDeclaringClass().getAnnotation(BlankParameterCheck.class);
             boolean methodCheckBoo = methodCheck == null ? false : methodCheck.name();
-            boolean methodCheckExceptionalBoo = methodIgnore == null ? false : methodIgnore.name();
+            boolean methodCheckIgnoredBoo = methodIgnore == null ? false : methodIgnore.name();
             boolean classCheckBoo = classCheck == null ? false : classCheck.name();
-            boolean check = (methodCheckBoo || classCheckBoo) && !methodCheckExceptionalBoo ? true : false;
+            boolean check = (methodCheckBoo || classCheckBoo) && !methodCheckIgnoredBoo ? true : false;
             if (loggerTrigger) {
                 logger.info("check params ? = {}", check);
             }
