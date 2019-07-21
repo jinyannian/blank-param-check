@@ -148,7 +148,7 @@
         </profile>
     </profiles>
     <build>
-        <finalName>ihc_standard</finalName>
+        <finalName>spring-boot-demo</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
             <resource>
